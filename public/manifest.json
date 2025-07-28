@@ -1,0 +1,21 @@
+{
+    "manifestVersion": 1,
+    "name": "Aloha Sample Plugin",
+    "description": "Aloha Sample Plugin",
+    "author": "antarasi",
+    "icon": "icon.svg",
+    "tools": [
+        {
+            "name": "tellTime",
+            "displayName": "Tell Time",
+            "description": "The assistant can tell the current time",
+            "parameters": {
+                "type": "object",
+                "required": ["format"],
+                "properties": {
+                    "format": { "type": "string", "description": "The format of the time to tell", "enum": ["iso", "long"] }
+                }
+            }
+        }
+    ]
+}
