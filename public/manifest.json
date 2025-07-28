@@ -3,7 +3,8 @@
     "name": "Internet Search",
     "description": "Enables AI to augment the response with internet search results",
     "author": "antarasi",
-    "icon": "icon.svg",
+    "icon": "dist/icon.svg",
+    "main": "dist/index.esm.js",
     "tools": [
         {
             "name": "searchInternet",
