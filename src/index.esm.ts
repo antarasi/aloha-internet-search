@@ -1,24 +1,44 @@
-import { Plugin, PluginContext } from 'aloha-sdk'
+import { Plugin } from 'aloha-sdk'
+import * as cheerio from 'cheerio'
 
-export default class AlohaSamplePlugin extends Plugin {
-  constructor(context: PluginContext) {
-    super(context)
-  }
+export default class InternetSearchPlugin extends Plugin {
+  private readonly toolsAvailable: Array<string> = ['searchInternet']
 
-  async toolCall(toolName: string, toolArgs: Record<string, any>): Promise<string> {
-    if (toolName === "tellTime") {
-        return this.tellTime(toolArgs.format)
+  async toolCall(toolName: string, args: { query: string }): Promise<string> {
+    if (!this.toolsAvailable.includes(toolName)) {
+      throw new Error(`${toolName} is not available`)
     }
 
-    throw new Error(`Tool ${toolName} is not available`)
+    const query = args.query
+    return this.webSearch(query)
   }
 
-  tellTime(format: string) {
-    const date = new Date()
-    if (format === "iso") {
-        return `The current time in \`${format}\` is **${date.toISOString()}**`
-    }
-    
-    return `The current time in \`${format}\` is **${date.toLocaleString()}**`
+  async webSearch(query: string): Promise<string> {
+    const url = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`
+    const body = await this.getContext().renderUrl(url)
+    const $ = cheerio.load(body)
+    const results = $('.links_main')
+      .map((_i, el) => {
+        const $el = $(el)
+        const url = $el.find('.result__title a').attr('href') || ''
+        const iconUrl = $el.find('.result__icon img').attr('src') || ''
+        return {
+          title: $el.find('.result__title a').text(),
+          url: url.startsWith('//') ? `https:${url}` : url,
+          description: $el.find('.result__snippet').text()?.trim() || '',
+          iconUrl: iconUrl.startsWith('//') ? `https:${iconUrl}` : iconUrl,
+        }
+      })
+      .get()
+  
+    // Format results as markdown
+    const markdownResults = results
+      .map((result) => {
+        const icon = result.iconUrl ? `![icon =20x20](${result.iconUrl}) ` : ''
+        return `## ${icon}[${result.title}](${result.url})\n\n${result.description}\n`
+      })
+      .join('\n')
+  
+    return `Here's what I found on the web for \`${query}\`. Visit the links to get more accurate information.\n\n${markdownResults}`
   }
 }
