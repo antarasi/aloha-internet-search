@@ -1,0 +1,28 @@
+{
+  "manifestVersion": 1,
+  "name": "Internet Search",
+  "description": "Enables AI to augment the response with internet search results",
+  "author": "antarasi",
+  "icon": "dist/icon.svg",
+  "main": "dist/index.esm.js",
+  "tools": [
+    {
+      "name": "searchInternet",
+      "displayName": "Internet Search",
+      "description": "The assistant can search the internet for a query",
+      "parameters": {
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The query to search for"
+          }
+        }
+      }
+    }
+  ],
+  "version": "1.0.2"
+}

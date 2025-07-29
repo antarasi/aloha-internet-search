@@ -12,13 +12,14 @@
     "dist"
   ],
   "scripts": {
+    "prebuild": "aloha version package.json manifest.json",
     "build": "tsc && vite build",
     "test": "tsx --test",
     "test:watch": "tsx --watch --test"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "aloha-sdk": "^1.1.1",
+    "aloha-sdk": "^1.2.0",
     "cheerio": "^1.1.2",
     "tsx": "^4.20.3",
     "typescript": "~5.8.3",

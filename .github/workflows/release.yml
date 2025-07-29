@@ -22,7 +22,7 @@ jobs:
         run: npm test
 
       - name: Pack
-        run: tar czf plugin.tgz dist
+        run: tar czf plugin.tgz dist manifest.json
 
       - name: Release
         uses: softprops/action-gh-release@v2
