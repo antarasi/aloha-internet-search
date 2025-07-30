@@ -2,15 +2,12 @@ import { Plugin } from 'aloha-sdk'
 import * as cheerio from 'cheerio'
 
 export default class InternetSearchPlugin extends Plugin {
-  private readonly toolsAvailable: Array<string> = ['searchInternet']
-
   async toolCall(toolName: string, args: { query: string }): Promise<string> {
-    if (!this.toolsAvailable.includes(toolName)) {
-      throw new Error(`${toolName} is not available`)
+    if (toolName === "searchInternet") {
+      return this.webSearch(args.query)
     }
 
-    const query = args.query
-    return this.webSearch(query)
+    throw new Error(`This tool is not available`)
   }
 
   async webSearch(query: string): Promise<string> {
