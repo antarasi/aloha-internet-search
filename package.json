@@ -18,11 +18,14 @@
     "test:watch": "tsx --watch --test"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.1",
     "@types/node": "^20.0.0",
-    "aloha-sdk": "^1.2.5",
-    "cheerio": "^1.1.2",
     "tsx": "^4.20.3",
     "typescript": "~5.8.3",
     "vite": "^7.0.4"
+  },
+  "dependencies": {
+    "aloha-sdk": "^1.2.7",
+    "cheerio": "^1.1.2"
   }
 }

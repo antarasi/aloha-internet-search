@@ -1,6 +1,7 @@
 {
   "manifestVersion": 1,
   "name": "Internet Search",
+  "version": "1.0.5",
   "description": "Enables AI to augment the response with internet search results",
   "author": "antarasi",
   "icon": "dist/icon.svg",
@@ -23,6 +24,5 @@
         }
       }
     }
-  ],
-  "version": "1.0.2"
+  ]
 }

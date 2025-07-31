@@ -1,14 +1,29 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import pkg from './package.json'
 
 export default defineConfig({
+  // See: https://vite.dev/config/ssr-options.html
+  ssr: {
+
+    // No dependencies are externalized. However, dependencies explicitly listed 
+    // in ssr.external (using string[] type) can take priority and still be externalized.
+    noExternal: true, 
+
+    // devDependencies are externalized (not included in the bundle)
+    external: Object.keys(pkg.devDependencies), 
+
+    // Node.js built-ins will also be externalized by default.
+    target: 'node'
+  },
   build: {
+    ssr: true,
     lib: {
       entry: ['src/index.esm.ts'],
       formats: ['es']
     },
     rollupOptions: {
-      external: [],
       output: {
         globals: {}
       }
@@ -19,7 +34,11 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': resolve('src')
+      '@': resolve('src'),
+      'turndown': 'turndown/lib/turndown.cjs.js' // resolve to CommonJS to support inner require('@mixmark-io/domino')
     }
   },
-}) 
+  plugins: [
+    nodeResolve() 
+  ]
+})
